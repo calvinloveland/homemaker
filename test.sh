@@ -1,0 +1,1 @@
+docker run -it --rm ubuntu /bin/bash -c "apt update && apt install -y wget && wget -O - https://raw.githubusercontent.com/calvinloveland/homemaker/main/get_and_run.sh | bash"
