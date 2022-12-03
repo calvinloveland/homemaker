@@ -3,43 +3,28 @@
 import subprocess
 import distro
 
-def install_docker(distro):
-    """Install docker on a linux machine."""
-    # sudo apt-get remove docker docker-engine docker.io containerd runc
-    # sudo apt-get update
-    # sudo apt-get install \
-    # ca-certificates \
-    # curl \
-    # gnupg \
-    # lsb-release
-    # sudo mkdir -p /etc/apt/keyrings
-    # curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-    # echo \
-    #     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-    #     $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    # sudo apt-get update
-    # sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-    # sudo usermod -aG docker $USER
-    if distro == "ubuntu":
+def install_docker(current_distro, password):
+    if current_distro == "Ubuntu":
         commands = [
-            "sudo apt-get remove docker docker-engine docker.io containerd runc",
-            "sudo apt-get update",
-            "sudo apt-get install ca-certificates curl gnupg lsb-release",
-            "sudo mkdir -p /etc/apt/keyrings",
-            "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg",
-            "echo deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null",
-            "sudo apt-get update",
-            "sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin",
-            "sudo usermod -aG docker $USER",
+            "sudo -S apt-get remove docker docker-engine docker.io containerd runc",
+            "sudo -S apt-get update",
+            "sudo -S apt-get install ca-certificates curl gnupg lsb-release",
+            "sudo -S mkdir -p /etc/apt/keyrings",
+            "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S gpg --dearmor -o /etc/apt/keyrings/docker.gpg",
+            "echo deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable | sudo -S tee /etc/apt/sources.list.d/docker.list > /dev/null",
+            "sudo -S apt-get update",
+            "sudo -S apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin",
+            "sudo -S usermod -aG docker $USER",
         ]
         for command in commands:
-            subprocess.run(command, shell=True)
-        exit(0)
+            subprocess.run("echo {} | {}".format(password, command), shell=True)
+        return True
     else:
-        print("Distro not supported yet.")
-        exit(1)
+        print("current_distro not supported yet.")
+        return False
 
-def main():
+
+def main(password):
     """Run the program."""
-    distro = distro.linux_distribution()[0]
-    install_docker(distro)
+    current_distro = distro.name()
+    return install_docker(current_distro,password)

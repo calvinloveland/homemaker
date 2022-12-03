@@ -1,23 +1,24 @@
 import distro
+import subprocess
 
-def install_vscode(distro):
+def install_vscode(current_distro, password):
     """Install vscode on a linux machine."""
-    if distro == "ubuntu":
+    if current_distro == "Ubuntu":
         commands = [
-            "sudo apt install software-properties-common apt-transport-https wget",
-            "wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -",
-            "sudo add-apt-repository \"deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main\"",
-            "sudo apt update",
-            "sudo apt install code",
+            "sudo -S apt install software-properties-common apt-transport-https wget",
+            "wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo -S apt-key add -",
+            "sudo -S add-apt-repository \"deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main\"",
+            "sudo -S apt update",
+            "sudo -S apt install code",
         ]
         for command in commands:
-            subprocess.run(command, shell=True)
-        exit(0)
+            subprocess.run("echo {} | {}".format(password, command), shell=True)
+        return True
     else:
         print("Distro not supported yet.")
-        exit(1)
+        return False
 
-def main():
+def main(password):
     """Run the program."""
-    distro = distro.linux_distribution()[0]
-    install_vscode(distro)
+    current_distro = distro.name()
+    return install_vscode(current_distro, password)
