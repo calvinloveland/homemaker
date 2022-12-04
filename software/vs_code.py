@@ -18,7 +18,14 @@ def install_vscode(current_distro, password):
         print("Distro not supported yet.")
         return False
 
+def check_if_installed():
+    """Check if vscode is installed."""
+    return subprocess.run("code --version", shell=True).returncode == 0
+
 def main(password):
     """Run the program."""
-    current_distro = distro.name()
-    return install_vscode(current_distro, password)
+    if check_if_installed():
+        print("VSCode is already installed.")
+    else:
+        current_distro = distro.name()
+        return install_vscode(current_distro, password)

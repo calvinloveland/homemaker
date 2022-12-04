@@ -22,5 +22,5 @@ if __name__ == '__main__':
 
     for module in software.__all__:
         module = importlib.import_module("software." + module)
-        module.main() 
+        module.main(sudo_password) 
     

@@ -1,3 +1,2 @@
 distro
 pyfiglet
-getpass

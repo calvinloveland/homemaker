@@ -15,8 +15,14 @@ def install_neovim(current_distro, sudo_password):
         print("current_distro not supported yet.")
         return False
 
+def check_if_installed():
+    """Check if neovim is installed."""
+    return subprocess.run("nvim --version", shell=True).returncode == 0
 
 def main(sudo_password):
     """Run the program."""
-    current_distro = distro.name()
-    return install_neovim(current_distro, sudo_password)
+    if check_if_installed():
+        print("Neovim is already installed.")
+    else:
+        current_distro = distro.name()
+        return install_neovim(current_distro, sudo_password)
