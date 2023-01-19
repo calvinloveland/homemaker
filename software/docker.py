@@ -8,15 +8,15 @@ class Docker(Software):
     tags = ["work"]
     @classmethod
     def pre_pre_apt_packages(cls):
-        # "sudo -S apt-get install -y ca-certificates curl gnupg lsb-release",
+        # "sudo apt-get install -y ca-certificates curl gnupg lsb-release",
         return ["ca-certificates", "curl", "gnupg", "lsb-release"]
     
     @classmethod
     def pre_apt(cls):
         return [
-            "sudo -S mkdir -p /etc/apt/keyrings",
-            "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo -S gpg --dearmor -o /etc/apt/keyrings/docker.gpg",
-            "echo deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable | sudo -S tee /etc/apt/sources.list.d/docker.list > /dev/null",]
+            "sudo mkdir -p /etc/apt/keyrings",
+            "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg",
+            "echo deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null",]
 
     @classmethod
     def apt_packages(cls):
@@ -24,7 +24,7 @@ class Docker(Software):
     
     @classmethod
     def post_apt(cls):
-        return ["sudo -S usermod -aG docker $USER",]
+        return ["sudo usermod -aG docker $USER",]
 
     @classmethod
     def check_if_installed(cls):

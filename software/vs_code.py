@@ -13,8 +13,8 @@ class VSCode(Software):
     @classmethod
     def pre_apt(cls):
         return [
-            "wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo -S apt-key add -",
-            "sudo -S add-apt-repository \"deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main\"",
+            "wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -",
+            "sudo add-apt-repository \"deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main\"",
         ]
     
     @classmethod

@@ -8,8 +8,8 @@ class Fish(Software):
     @classmethod
     def pre_apt(cls):
         return [
-            "sudo -S apt-add-repository ppa:fish-shell/release-3 -y",
-            "sudo -S apt update",
+            "sudo apt-add-repository ppa:fish-shell/release-3 -y",
+            "sudo apt update",
         ]
     @classmethod
     def apt_packages(cls):

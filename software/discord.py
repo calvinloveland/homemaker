@@ -10,7 +10,7 @@ class Discord(Software):
     def post_apt():
         return [
             "wget -O discord.deb https://discordapp.com/api/download?platform=linux&format=deb",
-            "sudo -S dpkg -i discord.deb",]
+            "sudo dpkg -i discord.deb",]
 
     def check_if_installed():
         """Check if Discord is installed."""
