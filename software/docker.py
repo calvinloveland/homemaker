@@ -28,7 +28,6 @@ class Docker(Software):
     @classmethod
     def post_apt(cls):
         return [
-            "sudo groupadd docker",
             # $USER doesn't work for some reason. Using whoami instead.
             "sudo usermod -aG docker $(whoami)",
         ]
