@@ -51,6 +51,7 @@ if __name__ == "__main__":
     print("Collected " + str(len(apt_packages)) + " apt_packages")
     print("Collected " + str(len(post_apt_commands)) + " post_apt_commands")
 
+
     subprocess.run("sudo apt-get update", shell=True, check=True)
     pre_pre_apt_command = "sudo apt-get install -y " + " ".join(pre_pre_apt_packages)
     subprocess.run(pre_pre_apt_command, shell=True, check=True)
@@ -64,9 +65,15 @@ if __name__ == "__main__":
     apt_command = "sudo apt-get install -y " + " ".join(apt_packages)
     subprocess.run(apt_command, shell=True, check=True)
 
+    failing_commands = []
     for post_apt_command in tqdm(
         post_apt_commands, desc="Post apt", unit="command", ncols=88
     ):
-        subprocess.run(post_apt_command, shell=True, check=True)
+        if subprocess.run(post_apt_command, shell=True).check_returncode != 0:
+            failing_commands.append(post_apt_command)
+    
+    print("======Failing commands!========")
+    for command in failing_commands:
+        print(command)
 
     print("Done")
