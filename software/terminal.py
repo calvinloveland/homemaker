@@ -20,6 +20,7 @@ class Fish(Software):
         return [
             "chsh -s /usr/bin/fish",
             "mkdir -p ~/.config/neofetch",
+            "mkdir -p ~/.config/fish"
             "cp " + neofetch_config + " ~/.config/neofetch/config.conf",
             "echo 'neofetch' >> ~/.config/fish/config.fish",
         ]
