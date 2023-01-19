@@ -24,6 +24,8 @@ class Fish(Software):
             return [
                 "echo 'deb http://download.opensuse.org/repositories/shells:/fish:/release:/3/Debian_{}/ /' | sudo tee /etc/apt/sources.list.d/shells:fish:release:3.list".format(version),
                 "curl -fsSL https://download.opensuse.org/repositories/shells:fish:release:3/Debian_{}/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/shells_fish_release_3.gpg > /dev/null".format(version),]
+        print("Unsupported distro: " + distro.name())
+        return []
 
     @classmethod
     def apt_packages(cls):
