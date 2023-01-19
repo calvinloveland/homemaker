@@ -11,10 +11,10 @@ import subprocess
 from pyfiglet import Figlet
 from tqdm import tqdm
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
-    f = Figlet(font='slant')
-    print(f.renderText('Homemaker'))
+    f = Figlet(font="slant")
+    print(f.renderText("Homemaker"))
     # print current distro
     print("Current distro: " + distro.name())
     # get all the modules in the software directory
@@ -44,25 +44,29 @@ if __name__ == '__main__':
                 post_apt_commands += software_class.post_apt()
 
     pre_pre_apt_packages = list(set(pre_pre_apt_packages))
-    apt_packages = list(set(apt_packages))    
+    apt_packages = list(set(apt_packages))
 
     print("Collected " + str(len(pre_pre_apt_packages)) + " pre_pre_apt_packages")
     print("Collected " + str(len(pre_apt_commands)) + " pre_apt_commands")
     print("Collected " + str(len(apt_packages)) + " apt_packages")
     print("Collected " + str(len(post_apt_commands)) + " post_apt_commands")
 
-    subprocess.run("sudo apt-get update", shell=True,check=True)
+    subprocess.run("sudo apt-get update", shell=True, check=True)
     pre_pre_apt_command = "sudo apt-get install -y " + " ".join(pre_pre_apt_packages)
-    subprocess.run(pre_pre_apt_command, shell=True,check=True)
+    subprocess.run(pre_pre_apt_command, shell=True, check=True)
 
-    for pre_apt_command in tqdm(pre_apt_commands, desc="Pre apt", unit="command", ncols=88):
-        subprocess.run(pre_apt_command, shell=True,check=True)
-    
-    subprocess.run("sudo apt-get update", shell=True,check=True)
+    for pre_apt_command in tqdm(
+        pre_apt_commands, desc="Pre apt", unit="command", ncols=88
+    ):
+        subprocess.run(pre_apt_command, shell=True, check=True)
+
+    subprocess.run("sudo apt-get update", shell=True, check=True)
     apt_command = "sudo apt-get install -y " + " ".join(apt_packages)
-    subprocess.run(apt_command, shell=True,check=True)
+    subprocess.run(apt_command, shell=True, check=True)
 
-    for post_apt_command in tqdm(post_apt_commands, desc="Post apt", unit="command", ncols=88):
-        subprocess.run(post_apt_command, shell=True,check=True)
+    for post_apt_command in tqdm(
+        post_apt_commands, desc="Post apt", unit="command", ncols=88
+    ):
+        subprocess.run(post_apt_command, shell=True, check=True)
 
     print("Done")

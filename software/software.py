@@ -1,8 +1,7 @@
-
-
 class Software:
 
     tags = []
+
     @classmethod
     def pre_pre_apt_packages(cls):
         return []
