@@ -11,6 +11,10 @@ import subprocess
 from pyfiglet import Figlet
 from tqdm import tqdm
 
+def run_command(command, failures):
+    if subprocess.run(command, shell=True, stdout=subprocess.DEVNULL).check_returncode != 0:
+        failures.append(command)
+
 if __name__ == "__main__":
 
     f = Figlet(font="slant")
@@ -52,25 +56,24 @@ if __name__ == "__main__":
     print("Collected " + str(len(post_apt_commands)) + " post_apt_commands")
 
 
-    subprocess.run("sudo apt-get update", shell=True, check=True)
+    failing_commands = []
+    run_command("sudo apt-get update", failing_commands)
     pre_pre_apt_command = "sudo apt-get install -y " + " ".join(pre_pre_apt_packages)
-    subprocess.run(pre_pre_apt_command, shell=True, check=True)
+    run_command(pre_pre_apt_command, failing_commands)
 
     for pre_apt_command in tqdm(
         pre_apt_commands, desc="Pre apt", unit="command", ncols=88
     ):
-        subprocess.run(pre_apt_command, shell=True, check=True)
+        run_command(pre_apt_command, failing_commands)
 
-    subprocess.run("sudo apt-get update", shell=True, check=True)
+    run_command("sudo apt-get update", failing_commands)
     apt_command = "sudo apt-get install -y " + " ".join(apt_packages)
-    subprocess.run(apt_command, shell=True, check=True)
+    run_command(apt_command, failing_commands)
 
-    failing_commands = []
     for post_apt_command in tqdm(
         post_apt_commands, desc="Post apt", unit="command", ncols=88
     ):
-        if subprocess.run(post_apt_command, shell=True).check_returncode != 0:
-            failing_commands.append(post_apt_command)
+        run_command(post_apt_command, failing_commands)
     
     print("======Failing commands!========")
     for command in failing_commands:

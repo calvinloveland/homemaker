@@ -1,5 +1,6 @@
 import subprocess
 import os
+import distro
 
 from .software import Software
 
@@ -8,11 +9,21 @@ class Fish(Software):
     tags = ["fish", "shell", "work"]
 
     @classmethod
+    def pre_pre_apt_packages(cls):
+        return ["software-properties-common", "apt-transport-https", "ca-certificates", "curl"]
+
+    @classmethod
     def pre_apt(cls):
-        return [
-            "sudo apt-add-repository ppa:fish-shell/release-3 -y",
-            "sudo apt update",
-        ]
+        if distro.name() == "Ubuntu":
+            return [
+                "sudo apt-add-repository ppa:fish-shell/release-3 -y",
+                "sudo apt update",
+            ]
+        if distro.name() == "Debian":
+            version = distro.version()
+            return [
+                "echo 'deb http://download.opensuse.org/repositories/shells:/fish:/release:/3/Debian_{}/ /' | sudo tee /etc/apt/sources.list.d/shells:fish:release:3.list".format(version),
+                "curl -fsSL https://download.opensuse.org/repositories/shells:fish:release:3/Debian_{}/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/shells_fish_release_3.gpg > /dev/null".format(version),]
 
     @classmethod
     def apt_packages(cls):
