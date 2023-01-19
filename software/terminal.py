@@ -19,7 +19,6 @@ class Fish(Software):
         neofetch_config = os.path.join(os.path.dirname(__file__), "neofetch_config")
         return [
             "chsh -s /usr/bin/fish",
-            "sudo mkdir -p ~/.config/neofetch"
             "sudo cp " + neofetch_config + " ~/.config/neofetch/config.conf",
             "echo 'neofetch' >> ~/.config/fish/config.fish",
         ]
