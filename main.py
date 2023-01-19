@@ -58,8 +58,9 @@ if __name__ == "__main__":
 
     failing_commands = []
     run_command("sudo apt-get update", failing_commands)
-    pre_pre_apt_command = "sudo apt-get install -y -m -q " + " ".join(pre_pre_apt_packages)
-    run_command(pre_pre_apt_command, failing_commands)
+    for pre_pre_apt_package in tqdm(pre_pre_apt_packages, desc="Pre pre apt", unit="package", ncols=88):
+        pre_pre_apt_command = "sudo apt-get install -y -m -q " + pre_pre_apt_package
+        run_command(pre_pre_apt_command, failing_commands)
 
     for pre_apt_command in tqdm(
         pre_apt_commands, desc="Pre apt", unit="command", ncols=88
@@ -67,8 +68,9 @@ if __name__ == "__main__":
         run_command(pre_apt_command, failing_commands)
 
     run_command("sudo apt-get update -q ", failing_commands)
-    apt_command = "sudo apt-get install -y -m -q " + " ".join(apt_packages)
-    run_command(apt_command, failing_commands)
+    for apt_package in tqdm(apt_packages, desc="Apt", unit="package", ncols=88):
+        apt_command = "sudo apt-get install -y -m -q " + apt_package
+        run_command(apt_command, failing_commands)
 
     for post_apt_command in tqdm(
         post_apt_commands, desc="Post apt", unit="command", ncols=88
