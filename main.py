@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     failing_commands = []
     run_command("sudo apt-get update", failing_commands)
-    pre_pre_apt_command = "sudo apt-get install -y " + " ".join(pre_pre_apt_packages)
+    pre_pre_apt_command = "sudo apt-get install -y -m -q " + " ".join(pre_pre_apt_packages)
     run_command(pre_pre_apt_command, failing_commands)
 
     for pre_apt_command in tqdm(
@@ -66,8 +66,8 @@ if __name__ == "__main__":
     ):
         run_command(pre_apt_command, failing_commands)
 
-    run_command("sudo apt-get update", failing_commands)
-    apt_command = "sudo apt-get install -y " + " ".join(apt_packages)
+    run_command("sudo apt-get update -q ", failing_commands)
+    apt_command = "sudo apt-get install -y -m -q " + " ".join(apt_packages)
     run_command(apt_command, failing_commands)
 
     for post_apt_command in tqdm(
