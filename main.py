@@ -11,6 +11,10 @@ import subprocess
 from pyfiglet import Figlet
 from tqdm import tqdm
 
+def run_command(command, failures):
+    if subprocess.run(command, shell=True, stdout=subprocess.DEVNULL).check_returncode != 0:
+        failures.append(command)
+
 if __name__ == "__main__":
 
     f = Figlet(font="slant")
@@ -51,22 +55,30 @@ if __name__ == "__main__":
     print("Collected " + str(len(apt_packages)) + " apt_packages")
     print("Collected " + str(len(post_apt_commands)) + " post_apt_commands")
 
-    subprocess.run("sudo apt-get update", shell=True, check=True)
-    pre_pre_apt_command = "sudo apt-get install -y " + " ".join(pre_pre_apt_packages)
-    subprocess.run(pre_pre_apt_command, shell=True, check=True)
+
+    failing_commands = []
+    run_command("sudo apt-get update", failing_commands)
+    for pre_pre_apt_package in tqdm(pre_pre_apt_packages, desc="Pre pre apt", unit="package", ncols=88):
+        pre_pre_apt_command = "sudo apt-get install -y -m -q " + pre_pre_apt_package
+        run_command(pre_pre_apt_command, failing_commands)
 
     for pre_apt_command in tqdm(
         pre_apt_commands, desc="Pre apt", unit="command", ncols=88
     ):
-        subprocess.run(pre_apt_command, shell=True, check=True)
+        run_command(pre_apt_command, failing_commands)
 
-    subprocess.run("sudo apt-get update", shell=True, check=True)
-    apt_command = "sudo apt-get install -y " + " ".join(apt_packages)
-    subprocess.run(apt_command, shell=True, check=True)
+    run_command("sudo apt-get update -q ", failing_commands)
+    for apt_package in tqdm(apt_packages, desc="Apt", unit="package", ncols=88):
+        apt_command = "sudo apt-get install -y -m -q " + apt_package
+        run_command(apt_command, failing_commands)
 
     for post_apt_command in tqdm(
         post_apt_commands, desc="Post apt", unit="command", ncols=88
     ):
-        subprocess.run(post_apt_command, shell=True, check=True)
+        run_command(post_apt_command, failing_commands)
+    
+    print("======Failing commands!========")
+    for command in failing_commands:
+        print(command)
 
     print("Done")
