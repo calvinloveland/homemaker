@@ -18,4 +18,4 @@ class Git(Software):
 
     def check_if_installed():
         """Check if Git is installed."""
-        return (subprocess.run("git --version", shell=True).returncode == 0 and USER_NAME in subprocess.run("git config --list", shell=True).stdout.decode("utf-8"))
+        return (subprocess.run("git --version", shell=True).returncode == 0 and USER_NAME in str(subprocess.run("git config --list", shell=True)))

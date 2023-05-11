@@ -20,11 +20,6 @@ class Fish(Software):
                 "sudo apt-add-repository ppa:fish-shell/release-3 -y",
                 "sudo apt update",
             ]
-        if  "debian" in distro_name:
-            version = distro.version().split(".")[0]
-            return [
-                "echo 'deb http://download.opensuse.org/repositories/shells:/fish:/release:/3/Debian_{}.0/ /' | sudo tee /etc/apt/sources.list.d/shells:fish:release:3.list".format(version),
-                "curl -fsSL https://download.opensuse.org/repositories/shells:fish:release:3/Debian_{}.0/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/shells_fish_release_3.gpg > /dev/null".format(version),]
         print("Unsupported distro: " + distro.name())
         return []
 
