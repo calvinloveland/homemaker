@@ -7,6 +7,6 @@ virtualenv -p python3 venv
 # activate virtual environment
 source venv/bin/activate
 # install requirements
-pip3 install -r $(dirname "$0")/requirements.txt
+pip3 install .
 # run the program
 python3 $(dirname "$0")/main.py
