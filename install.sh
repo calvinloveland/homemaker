@@ -7,6 +7,6 @@ virtualenv -p python3 venv
 # activate virtual environment
 source venv/bin/activate
 # install requirements
-pip3 install .
+pip3 install homemaker/
 # run the program
 homemaker
