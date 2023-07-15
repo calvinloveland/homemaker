@@ -9,4 +9,4 @@ source venv/bin/activate
 # install requirements
 pip3 install .
 # run the program
-python3 $(dirname "$0")/main.py
+homemaker
