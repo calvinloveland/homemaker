@@ -1,10 +1,6 @@
-import multiprocessing
-import software
-import time
 import importlib
 import distro
-import software
-import getpass
+from . import software
 import inspect
 import subprocess
 
@@ -15,8 +11,7 @@ def run_command(command, failures):
     if subprocess.run(command, shell=True, stdout=subprocess.DEVNULL).check_returncode != 0:
         failures.append(command)
 
-if __name__ == "__main__":
-
+def main():
     f = Figlet(font="slant")
     print(f.renderText("Homemaker"))
     # print current distro
@@ -34,7 +29,7 @@ if __name__ == "__main__":
     tags = default_tags
 
     for module in software.__all__:
-        module = importlib.import_module("software." + module)
+        module = importlib.import_module("homemaker.software." + module)
         software_classes = inspect.getmembers(module, inspect.isclass)
         for software_class in software_classes:
             software_class = software_class[1]
@@ -82,3 +77,6 @@ if __name__ == "__main__":
         print(command)
 
     print("Done")
+
+if __name__ == "__main__":
+    main()

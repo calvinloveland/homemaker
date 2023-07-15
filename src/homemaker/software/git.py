@@ -11,7 +11,7 @@ class Git(Software):
     def post_apt():
         return [
             "git config --global user.name '" + USER_NAME + "'",
-            "git config --global user.email 'calvin@loveland.dev'"
+            "git config --global user.email 'calvin@loveland.dev'",
             "git config --global pull.rebase false",
             "git config --global core.editor 'nvim'",
         ]
