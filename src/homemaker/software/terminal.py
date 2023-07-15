@@ -10,7 +10,12 @@ class Fish(Software):
 
     @classmethod
     def pre_pre_apt_packages(cls):
-        return ["software-properties-common", "apt-transport-https", "ca-certificates", "curl"]
+        return [
+            "software-properties-common",
+            "apt-transport-https",
+            "ca-certificates",
+            "curl",
+        ]
 
     @classmethod
     def pre_apt(cls):
@@ -25,7 +30,7 @@ class Fish(Software):
 
     @classmethod
     def apt_packages(cls):
-        return ["fish", "neofetch", "fonts-firacode","grep"]
+        return ["fish", "neofetch", "fonts-firacode", "grep"]
 
     @classmethod
     def post_apt(cls):

@@ -1,5 +1,4 @@
 class Software:
-
     tags = []
 
     @classmethod

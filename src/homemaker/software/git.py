@@ -5,6 +5,7 @@ from .software import Software
 
 USER_NAME = "Calvin Loveland"
 
+
 class Git(Software):
     tags = ["git", "work"]
 
@@ -18,4 +19,8 @@ class Git(Software):
 
     def check_if_installed():
         """Check if Git is installed."""
-        return (subprocess.run("git --version", shell=True).returncode == 0 and USER_NAME in str(subprocess.run("git config --list", shell=True)))
+        return subprocess.run(
+            "git --version", shell=True
+        ).returncode == 0 and USER_NAME in str(
+            subprocess.run("git config --list", shell=True)
+        )
